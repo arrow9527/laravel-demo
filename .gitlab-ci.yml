@@ -12,11 +12,13 @@ build-job:
   stage: build
   script:
     - echo "Build"
-    - docker build -t my-first-image .
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
 
 test-job:
   stage: test
-  script: echo "Tests..."
+  script:
+    - echo "Tests..."
+    - docker images
 
 deploy-job:
   stage: deploy
