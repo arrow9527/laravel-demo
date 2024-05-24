@@ -15,6 +15,9 @@ build-job:
     - docker build -t $CI_REGISTRY_IMAGE:latest .
     - docker images
     - docker save  $CI_REGISTRY_IMAGE > $CI_REGISTRY_IMAGE.tar
+  artifacts:
+    paths:
+        - $CI_REGISTRY_IMAGE.tar
 
 test-job:
   stage: test
@@ -23,5 +26,18 @@ test-job:
 
 deploy-job:
   stage: deploy
+  before_script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SERVER_PRIVATE_KEY")
   script:
     - echo "Deploying application..."
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "
+
+# jobDeploy:
+#   stage: deploy
+#   script:
+#     - scp -o StrictHostKeyChecking=no -r build $SERVER_USER@$SERVER_URL:workspace/smoooth-esg-portal
+#     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "
+#       docker compose pull &&
+#       docker compose up -d --build
+#       "
