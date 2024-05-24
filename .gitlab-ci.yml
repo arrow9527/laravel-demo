@@ -32,7 +32,7 @@ deploy-job:
     - ssh-add <(echo "$SERVER_PRIVATE_KEY")
   script:
     - echo "Deploying application..."
-    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "ls -al"
 
 # jobDeploy:
 #   stage: deploy
