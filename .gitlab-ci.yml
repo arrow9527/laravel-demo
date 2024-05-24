@@ -1,5 +1,6 @@
 image: docker:24.0.5
 services:
+  # 將源自映像的完整名稱設定簡短別名
   - name: registry.hub.docker.com/library/docker:24.0.5-dind
     alias: docker
 
@@ -28,7 +29,7 @@ deploy-job:
   stage: deploy
   before_script:
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SERVER_PRIVATE_KEY" | base64 -d)
+    - ssh-add <(echo "${SERVER_PRIVATE_KEY}" | base64 --decode | tr -d "\r")
   script:
     - echo "Deploying application..."
     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "
