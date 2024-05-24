@@ -8,7 +8,7 @@ build-job:
   stage: build
   script:
     - echo "Build"
-    - docker info
+    - docker build -t my-first-image .
 
 test-job:
   stage: test
