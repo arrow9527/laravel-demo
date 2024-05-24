@@ -9,6 +9,7 @@ build-job:
   stage: build
   script:
     - echo "Build"
+    - docker info
 
 test-job:
   stage: test
