@@ -32,6 +32,8 @@ deploy-job:
     - ssh-add <(echo "$SERVER_PRIVATE_KEY")
   script:
     - echo "Deploying application..."
+    - ls -al
+    # - scp -o StrictHostKeyChecking=no -r build $SERVER_USER@$SERVER_URL:workspace
     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "ls -al"
 
 # jobDeploy:
