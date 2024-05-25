@@ -36,11 +36,7 @@ deploy-job:
     - scp -o StrictHostKeyChecking=no $CI_REGISTRY_IMAGE.tar $SERVER_USER@$SERVER_URL:workspace
     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "ls -al"
 
-# jobDeploy:
-#   stage: deploy
-#   script:
-#     - scp -o StrictHostKeyChecking=no -r build $SERVER_USER@$SERVER_URL:workspace/smoooth-esg-portal
-#     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "
-#       docker compose pull &&
-#       docker compose up -d --build
-#       "
+first-job:
+  stage: .pre
+  script:
+    - echo "This job runs in the .pre stage, before all other stages."
