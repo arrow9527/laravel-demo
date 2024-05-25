@@ -82,6 +82,7 @@ build-job:
     - echo "Build"
     - docker build -t $CI_REGISTRY_IMAGE:latest .
     - docker save  $CI_REGISTRY_IMAGE > $CI_REGISTRY_IMAGE.tar
+    - docker images
   artifacts:
     paths:
         - $CI_REGISTRY_IMAGE.tar
@@ -90,7 +91,6 @@ test-job:
   stage: test
   script:
     - echo "Tests..."
-    - docker images
     - docker run --rm -v $(pwd):/app -w /app $CI_REGISTRY_IMAGE:latest ./vendor/bin/phpunit
 
 deploy-job:
