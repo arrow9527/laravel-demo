@@ -102,7 +102,7 @@ deploy-job:
     - scp -o StrictHostKeyChecking=no $CI_REGISTRY_IMAGE.tar $SERVER_USER@$SERVER_URL:workspace
     - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "
       docker load < workspace/$CI_REGISTRY_IMAGE.tar &&
-      docker rm -f laravel_app || true &&
+      docker rm -f $APP_NAME || true &&
       docker images &&
-      docker run -d --name laravel_app -p 80:8181 $CI_REGISTRY_IMAGE:latest
+      docker run -d --name $APP_NAME -p 80:8181 $CI_REGISTRY_IMAGE:latest
       "
