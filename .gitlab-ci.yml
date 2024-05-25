@@ -100,4 +100,5 @@ save-env-job:
     - echo "" >> .env
     - echo VITE_APP_NAME=\"\${APP_NAME}\" >> .env
   artifacts:
-    paths: .env
+    paths:
+      - .env
