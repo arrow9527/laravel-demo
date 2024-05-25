@@ -9,33 +9,6 @@ stages:
   - test
   - deploy
 
-build-job:
-  stage: build
-  script:
-    - echo "Build"
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
-    - docker images
-    - docker save  $CI_REGISTRY_IMAGE > $CI_REGISTRY_IMAGE.tar
-  artifacts:
-    paths:
-        - $CI_REGISTRY_IMAGE.tar
-
-test-job:
-  stage: test
-  script:
-    - echo "Tests..."
-
-deploy-job:
-  stage: deploy
-  before_script:
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SERVER_PRIVATE_KEY")
-  script:
-    - echo "Deploying application..."
-    - ls -al
-    - scp -o StrictHostKeyChecking=no $CI_REGISTRY_IMAGE.tar $SERVER_USER@$SERVER_URL:workspace
-    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "docker load < workspace/$CI_REGISTRY_IMAGE.tar && docker images"
-
 save-env-job:
   stage: .pre
   script:
@@ -102,3 +75,30 @@ save-env-job:
   artifacts:
     paths:
       - .env
+
+build-job:
+  stage: build
+  script:
+    - echo "Build"
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker images
+    - docker save  $CI_REGISTRY_IMAGE > $CI_REGISTRY_IMAGE.tar
+  artifacts:
+    paths:
+        - $CI_REGISTRY_IMAGE.tar
+
+test-job:
+  stage: test
+  script:
+    - echo "Tests..."
+
+deploy-job:
+  stage: deploy
+  before_script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SERVER_PRIVATE_KEY")
+  script:
+    - echo "Deploying application..."
+    - ls -al
+    - scp -o StrictHostKeyChecking=no $CI_REGISTRY_IMAGE.tar $SERVER_USER@$SERVER_URL:workspace
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "docker load < workspace/$CI_REGISTRY_IMAGE.tar && docker images"
