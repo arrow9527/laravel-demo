@@ -34,7 +34,7 @@ deploy-job:
     - echo "Deploying application..."
     - ls -al
     - scp -o StrictHostKeyChecking=no $CI_REGISTRY_IMAGE.tar $SERVER_USER@$SERVER_URL:workspace
-    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "ls -al"
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "docker load < workspace/$CI_REGISTRY_IMAGE.tar && docker images"
 
 save-env-job:
   stage: .pre
