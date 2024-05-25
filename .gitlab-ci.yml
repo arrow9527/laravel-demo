@@ -80,7 +80,7 @@ build-job:
   stage: build
   script:
     - echo "Build"
-    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
     - docker images
     - docker save  $CI_REGISTRY_IMAGE > $CI_REGISTRY_IMAGE.tar
   artifacts:
@@ -101,4 +101,4 @@ deploy-job:
     - echo "Deploying application..."
     - ls -al
     - scp -o StrictHostKeyChecking=no $CI_REGISTRY_IMAGE.tar $SERVER_USER@$SERVER_URL:workspace
-    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "docker load < workspace/$CI_REGISTRY_IMAGE.tar && docker images"
+    - ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_URL "docker load < workspace/$CI_REGISTRY_IMAGE.tar && docker images && docker run -d --name laravel_app -p 80:8181 $CI_REGISTRY_IMAGE:latest"
