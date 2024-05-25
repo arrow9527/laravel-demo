@@ -13,7 +13,7 @@ build-job:
   stage: build
   script:
     - echo "Build"
-    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
     - docker images
     - docker save  $CI_REGISTRY_IMAGE > $CI_REGISTRY_IMAGE.tar
   artifacts:
